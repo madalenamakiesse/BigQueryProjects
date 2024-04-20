@@ -1,34 +1,21 @@
--- Evaluating the models
+-- Predict
 SELECT
-  roc_auc,
-  CASE
-    WHEN roc_auc > .9 THEN 'Good'
-    WHEN roc_auc > .8 THEN 'Fair'    
-    WHEN roc_auc > .7 THEN 'Decent'    
-    WHEN roc_auc > .6 THEN 'Not Good'
-    ELSE 'Poor'
-  END AS Model_Quality
+  Credit_History, 
+  ApplicantIncome, 
+  CoapplicantIncome, 
+  LoanAmount, 
+  Loan_Amount_Term, 
+  Married, 
+  Self_Employed, 
+  Education, 
+  Gender, 
+  Dependents, 
+  Property_Area, 
+  predicted_Loan_Status
 FROM
-  ML.EVALUATE(MODEL loan.model, (
-    SELECT 
+  ML.PREDICT(MODEL `loan.model3`, (
+    SELECT
       *
-    FROM 
-      `loan.train_clean`
-  ));
-
-SELECT
-  roc_auc,
-  CASE
-    WHEN roc_auc > .9 THEN 'Good'
-    WHEN roc_auc > .8 THEN 'Fair'    
-    WHEN roc_auc > .7 THEN 'Decent'    
-    WHEN roc_auc > .6 THEN 'Not Good'
-    ELSE 'Poor'
-  END AS Model_Quality
-FROM
-  ML.EVALUATE(MODEL loan.model1, (
-    SELECT 
-      *
-    FROM 
-      `loan.train_clean`
+    FROM
+      `loan.test_clean`
   ));
