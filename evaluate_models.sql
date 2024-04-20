@@ -1,21 +1,51 @@
--- Predict
+-- Evaluating the models
 SELECT
-  Credit_History, 
-  ApplicantIncome, 
-  CoapplicantIncome, 
-  LoanAmount, 
-  Loan_Amount_Term, 
-  Married, 
-  Self_Employed, 
-  Education, 
-  Gender, 
-  Dependents, 
-  Property_Area, 
-  predicted_Loan_Status
+  roc_auc,
+  CASE
+    WHEN roc_auc > .9 THEN 'Good'
+    WHEN roc_auc > .8 THEN 'Fair'    
+    WHEN roc_auc > .7 THEN 'Decent'    
+    WHEN roc_auc > .6 THEN 'Not Good'
+    ELSE 'Poor'
+  END AS Model_Quality
 FROM
-  ML.PREDICT(MODEL `loan.model3`, (
-    SELECT
+  ML.EVALUATE(MODEL loan.model, (
+    SELECT 
       *
-    FROM
-      `loan.test_clean`
+    FROM 
+      `loan.train_clean`
+  ));
+
+SELECT
+  roc_auc,
+  CASE
+    WHEN roc_auc > .9 THEN 'Good'
+    WHEN roc_auc > .8 THEN 'Fair'    
+    WHEN roc_auc > .7 THEN 'Decent'    
+    WHEN roc_auc > .6 THEN 'Not Good'
+    ELSE 'Poor'
+  END AS Model_Quality
+FROM
+  ML.EVALUATE(MODEL loan.model1, (
+    SELECT 
+      *
+    FROM 
+      `loan.train_clean`
+  ));
+  -- Evaluating the models
+SELECT
+  roc_auc,
+  CASE
+    WHEN roc_auc > .9 THEN 'Good'
+    WHEN roc_auc > .8 THEN 'Fair'    
+    WHEN roc_auc > .7 THEN 'Decent'    
+    WHEN roc_auc > .6 THEN 'Not Good'
+    ELSE 'Poor'
+  END AS Model_Quality
+FROM
+  ML.EVALUATE(MODEL loan.model3, (
+    SELECT 
+      *
+    FROM 
+      `loan.train_clean`
   ));
