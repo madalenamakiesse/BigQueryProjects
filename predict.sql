@@ -13,7 +13,7 @@ SELECT
   Property_Area, 
   predicted_Loan_Status
 FROM
-  ML.PREDICT(MODEL `loan.model`, (
+  ML.PREDICT(MODEL `loan.model3`, (
     SELECT
       *
     FROM
